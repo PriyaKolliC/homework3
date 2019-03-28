@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+<head>  
+<script type="text/javascript">
+window.onload = function () {
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	
+	title:{
+		text: "Forecast plot over 5 days"
+	},
+	axisX: {
+		title: "DATES"
+	},
+	
+	data: [{
+		type: "bar",
+		showInLegend: true,
+		name: "TMAX",
+		color: "gold",
+		dataPoints: [
+			{ label: "Italy",y: 243 },
+			{ label: "China",y: 236 },
+			{  label: "France" ,y: 243},
+			{  label: "Great Britain" ,y: 273},
+			{  label: "Germany" ,y: 269,},
+			{  label: "Russia",y: 196 }
+			
+		]
+	},
+	{
+		type: "bar",
+		showInLegend: true,
+		name: "TMIN",
+		color: "silver",
+		dataPoints: [
+			{ label: "Italy",y: 243 },
+			{ label: "China",y: 236 },
+			{  label: "France" ,y: 243},
+			{  label: "Great Britain" ,y: 273},
+			{  label: "Germany" ,y: 269,},
+			{  label: "Russia",y: 196 }
+		]
+	}]
+});
+chart.render();
+
+
+}
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 300px; width: 50%;"></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</body>
+</html>

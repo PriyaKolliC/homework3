@@ -1,0 +1,163 @@
+<html>
+<head>
+<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}" media="screen" title="no title">
+<link rel="stylesheet" href="{{ url_for('static', filename='selfcss.css') }}" media="screen" title="no title">
+
+
+<script src="{{url_for('static', filename='canvas.min.js')}}"></script>
+<script src="{{url_for('static', filename='jquery.js')}}"></script>
+
+
+</head>
+<body>
+
+<h1>Cincinnati Weather Forecast</h1>
+<br>
+<br>
+<br>
+<input type="date" id="input_date" name="input_date" value="input_date">
+<button onclick=button_click()>Get Forecast Data</button>
+<br>
+<br>
+<table id="header_table" border=1 align="center" style="display:none">
+<th>DATE</th>
+<th>MAX TEMPERATURE</th>
+<th>MIN TEMPERATURE</th>
+</table>
+
+<table id="records_table" border=1 align="center" style="display:none">
+</table>
+<br>
+<br>
+
+<div id="chartContainer"></div>
+
+<script>
+$(document).ready(function(){
+
+  $("button").click(function(){
+	$('#records_table').empty();
+	var term = $('#input_date').val();
+	if(term== '')
+	{
+		alert('Date cannot be empty');
+		return false;
+	}
+	var ne = term.split('-');
+	ne = String(ne[0])+String(ne[1])+String(ne[2]);
+	var pass_url = 'http://18.217.78.241/weather/forecast/' + ne;
+	<!--alert(pass_url);-->
+    $.ajax({
+	type:'GET',
+	url: pass_url,
+	success: function(result){
+		var c = [];
+		var tmax = [];
+		var tmin =[];
+		var dates = [];
+		var count = 0;
+		
+		$.each(result, function(index, row) {
+			<!--alert(JSON.stringify(row.DATE));-->
+			count = count + 1;
+			if(count <= 5)
+			{
+			c.push("<tr><td>" + row.DATE + "</td>");
+			c.push("<td>" + row.TMAX + "</td>");
+			c.push("<td>" + row.TMIN + "</td></tr>"); 
+			tmax.push(row.TMAX);
+			tmin.push(row.TMIN);
+			dates.push(row.DATE);
+			}
+         });
+		 
+		 
+		  $('#records_table').append(c.join(""));
+		  $('#header_table').show();
+		  $('#records_table').show();
+
+				
+			var chart = new CanvasJS.Chart("chartContainer", {
+			
+			title:{
+				text: "Forecast plot over 5 days"
+			},
+			axisX: {
+				title: "DATES"
+			},
+			
+			data: [{
+				type: "bar",
+				showInLegend: true,
+				name: "TMAX",
+				color: "gold",
+				dataPoints: [
+					{ label: dates[0],y: tmax[0] },
+					{ label: dates[1],y: tmax[1] },
+					{  label: dates[2] ,y: tmax[2]},
+					{  label: dates[3] ,y: tmax[3]},
+					{  label: dates[4] ,y: tmax[4]},
+					
+					
+				]
+			},
+			{
+				type: "bar",
+				showInLegend: true,
+				name: "TMIN",
+				color: "silver",
+				dataPoints: [
+					{ label: dates[0],y: tmin[0] },
+					{ label: dates[1],y: tmin[1] },
+					{  label: dates[2] ,y: tmin[2]},
+					{  label: dates[3] ,y: tmin[3]},
+					{  label: dates[4] ,y: tmin[4]},
+					
+				]
+			}]
+		});
+		chart.render();
+
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+    }
+	});
+  });
+});
+  
+</script>
+
+</body>
+</html>
